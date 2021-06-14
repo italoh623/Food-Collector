@@ -13,7 +13,6 @@ def setup():
     #Constants
     global vehicle
     global food
-    global local
     size(640, 360)
     velocity = PVector(0, 0)
     vehicle = Vehicle(width / 2, height / 2, velocity)
@@ -23,7 +22,6 @@ def setup():
     local = True
 
 def draw():
-    global local
     background(255)
     mouse = PVector(mouseX, mouseY)
     
