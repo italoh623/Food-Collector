@@ -18,7 +18,7 @@ def setup():
     vehicle = Vehicle(width / 2, height / 2, velocity)
     x = random(640)
     y = random(360)
-    food = Food(x, y)
+    food = Food(10, 10)
 
 def draw():
     background(255)
@@ -26,7 +26,14 @@ def draw():
     
     if (vehicle.checkCollision(food)):
         food.changePosition()
+        vehicle.food_location = PVector(-1,-1)
     
+    if (vehicle.food_location == PVector(-1,-1)):
+        vehicle.locate_food(food)
+    
+    else:
+        vehicle.eat()
+        
     food.display()
     vehicle.update()
     vehicle.display()

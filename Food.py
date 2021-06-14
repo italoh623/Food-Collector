@@ -5,6 +5,7 @@ class Food():
     def __init__(self, x, y):
         self.position = PVector(x, y)
         self.r = 10
+        self.f_color = color(255,0,0)
 
     def getPosition(self):
         return self.position
@@ -15,7 +16,7 @@ class Food():
 
     def display(self):
         # Draw a triangle rotated in the direction of velocity
-        fill(127)
+        fill(self.f_color)
         noStroke()
         strokeWeight(1)
         with pushMatrix():

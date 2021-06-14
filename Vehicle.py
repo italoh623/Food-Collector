@@ -15,6 +15,7 @@ class Vehicle():
         self.r = 6
         self.maxspeed = 5
         self.maxforce = 0.2
+        self.food_location = PVector(-1,-1)
 
     def getPosition(self):
         return self.position
@@ -35,6 +36,40 @@ class Vehicle():
         
         return False
 
+    def locate_food(self, food):
+        for y in range(0,height):
+            for x in range(0,width):
+                p = str(hex(get(x,y)))
+                if p != 'FFFFFFFF':
+                    print(p)
+                if p == 'FFFF0000':
+                    self.food_location = PVector(x + food.r/2,y + food.r/2)
+                    print('found food on' + str(self.food_location))
+                    return
+                
+    
+    # A method that calculates a steering force towards a target
+    # STEER = DESIRED MINUS VELOCITY
+    def eat(self):
+        
+        target = self.food_location
+        # A vector pointing from the location to the target
+        desired = target - self.position
+        d = desired.mag()
+
+        # Scale with arbitrary damping within 100 pixels
+        if (d < 100):
+            m = map(d, 0, 100, 0, self.maxspeed)
+            desired.setMag(m)
+        else:
+            desired.setMag(self.maxspeed)
+
+        # Steering = Desired minus velocity
+        steer = desired - self.velocity
+        steer.limit(self.maxforce)  # Limit to maximum steering force
+
+        self.applyForce(steer)
+    
     # Method to update location
     def update(self):
         # Update velocity
