@@ -16,9 +16,13 @@ class Vehicle():
         self.maxspeed = 5
         self.maxforce = 0.2
         self.food_location = PVector(-1,-1)
+        self.score = 0
 
     def getPosition(self):
         return self.position
+    
+    def eat(self):
+        self.score = self.score + 1
     
     def checkCollision(self, food):
         foodPosition = food.getPosition()
@@ -40,8 +44,6 @@ class Vehicle():
         for y in range(0,height):
             for x in range(0,width):
                 p = str(hex(get(x,y)))
-                if p != 'FFFFFFFF':
-                    print(p)
                 if p == 'FFFF0000':
                     self.food_location = PVector(x + food.r/2,y + food.r/2)
                     print('found food on' + str(self.food_location))
@@ -50,7 +52,7 @@ class Vehicle():
     
     # A method that calculates a steering force towards a target
     # STEER = DESIRED MINUS VELOCITY
-    def eat(self):
+    def arrive(self):
         
         target = self.food_location
         # A vector pointing from the location to the target
@@ -86,6 +88,8 @@ class Vehicle():
 
     def display(self):
         # Draw a triangle rotated in the direction of velocity
+        fill(0)
+        text('Score = ' + str(self.score), 10, 10)
         theta = self.velocity.heading() + PI / 2
         fill(127)
         noStroke()
