@@ -4,7 +4,7 @@ class Food():
 
     def __init__(self, x, y):
         self.position = PVector(x, y)
-        self.r = 10
+        self.r = 20
         self.f_color = color(255,0,0)
 
     def getPosition(self):

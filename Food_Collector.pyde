@@ -7,39 +7,28 @@
 # Draws a "vehicle" on the screen
 
 from Vehicle import Vehicle
-from Food import Food
+from Map import Map
 
 def setup():
+    size(640, 360)
+    
     #Constants
     global vehicle
-    global food
-    size(640, 360)
-    velocity = PVector(0, 0)
-    vehicle = Vehicle(width / 2, height / 2, velocity)
+    global mapa
+    
+    velocity = PVector(1, 0)
+    vehicle = Vehicle(50, height - 50, velocity)
     x = random(640)
     y = random(360)
-    food = Food(x, y)
-    local = True
+    mapa = Map()
+    mapa.make_grid()
+    
 
 def draw():
-    background(255)
-    mouse = PVector(mouseX, mouseY)
-    
-    if (vehicle.checkCollision(food)):
-        food.changePosition()
-        vehicle.eat()
-        vehicle.food_location = PVector(-1,-1)
-    
-
-    food.display()
+    mapa.plot()
     vehicle.update()
     vehicle.display()
-    
-    if vehicle.food_location == PVector(-1,-1):
-        vehicle.locate_food(food)
-    
-    else:
-        vehicle.arrive()
+
 
 def keyTyped():
     print(key)

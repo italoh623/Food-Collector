@@ -52,9 +52,9 @@ class Vehicle():
     
     # A method that calculates a steering force towards a target
     # STEER = DESIRED MINUS VELOCITY
-    def arrive(self):
+    def arrive(self, location):
         
-        target = self.food_location
+        target = location
         # A vector pointing from the location to the target
         desired = target - self.position
         d = desired.mag()
@@ -67,6 +67,21 @@ class Vehicle():
             desired.setMag(self.maxspeed)
 
         # Steering = Desired minus velocity
+        steer = desired - self.velocity
+        steer.limit(self.maxforce)  # Limit to maximum steering force
+
+        self.applyForce(steer)
+    
+    # A method that calculates a steering force towards a target
+    # STEER = DESIRED MINUS VELOCITY
+    def seek(self, target):
+
+        # A vector pointing from the location to the target
+        desired = target - self.position
+
+        # Scale to maximum speed
+        desired.setMag(self.maxspeed)
+
         steer = desired - self.velocity
         steer.limit(self.maxforce)  # Limit to maximum steering force
 
@@ -89,7 +104,7 @@ class Vehicle():
     def display(self):
         # Draw a triangle rotated in the direction of velocity
         fill(0)
-        text('Score = ' + str(self.score), 10, 10)
+        # text('Score = ' + str(self.score), 10, 10)
         theta = self.velocity.heading() + PI / 2
         fill(127)
         noStroke()
