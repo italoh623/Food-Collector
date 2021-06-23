@@ -6,6 +6,8 @@
 
 from Food import Food
 
+MAX_SPEED = 2
+
 class Vehicle():
 
     def __init__(self, x, y, vel):
@@ -13,7 +15,7 @@ class Vehicle():
         self.velocity = vel
         self.position = PVector(x, y)
         self.r = 6
-        self.maxspeed = 5
+        self.maxspeed = MAX_SPEED
         self.maxforce = 0.2
         self.food_location = PVector(-1,-1)
         self.score = 0
@@ -23,6 +25,16 @@ class Vehicle():
     
     def eat(self):
         self.score = self.score + 1
+    
+    def change_speed(self, type):
+        if type == -1:
+            self.velocity = PVector(-self.velocity.x, -self.velocity.y)
+        elif type == 0:
+            self.maxspeed = MAX_SPEED
+        elif type == 1:
+            self.maxspeed = MAX_SPEED * 0.5
+        elif type == 2:
+            self.maxspeed = MAX_SPEED * 0.3
     
     def checkCollision(self, food):
         foodPosition = food.getPosition()

@@ -1,4 +1,5 @@
 from Mapa1 import mapa
+import math
 
 class Map():
     def __init__(self):
@@ -30,6 +31,12 @@ class Map():
         # print(self.grid)
         self.grid = mapa
         return self.grid
+    
+    def get_terrain(self, position):
+        x = math.floor(position.x/self.tile_size)
+        y = math.floor(position.y/self.tile_size)
+        return self.grid[int(x)][int(y)]
+    
 
     def plot(self):
         background(255)
