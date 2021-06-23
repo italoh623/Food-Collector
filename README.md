@@ -12,9 +12,9 @@ Colaborators
  - Corrigir aparição da comida (não aparecer dentro de parede, água ou atoleiro)
  - Andar pelo caminho
  - Funções de busca
- -- BFS
- -- DFS
- -- Custo uniforme
- -- Guloso
- -- A*
+ ** BFS
+ ** DFS
+ ** Custo uniforme
+ ** Guloso
+ ** A*
  - Traçado do caminho
