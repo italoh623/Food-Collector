@@ -7,8 +7,8 @@ Colaborators
 - [Lucas Grisi](https://github.com/lucasgrisiq)
 
 # Task List
- - [ ] Criar Mapas
- - [ ] Função para escolher mapas
+ - [x] Criar Mapas - 5
+ - [x] Função para escolher mapas
  - [ ] Corrigir aparição da comida (não aparecer dentro de parede, água ou atoleiro)
  - [ ] Andar pelo caminho
  - [ ] BFS
