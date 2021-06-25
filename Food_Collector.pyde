@@ -39,8 +39,6 @@ def draw():
         vehicle.food_location = PVector(-1,-1)
         
     food.display()
-
-    print("position", food.getPosition())
     
     vehicle.update()
     vehicle.change_speed(mapa.get_terrain(vehicle.getPosition()))
