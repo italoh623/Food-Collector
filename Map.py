@@ -1,4 +1,4 @@
-from Mapa1 import mapa
+from Mapa1 import maps
 import math
 
 class Map():
@@ -29,7 +29,8 @@ class Map():
         #     self.grid.append(linha)
         
         # print(self.grid)
-        self.grid = mapa
+        index = random(len(maps))
+        self.grid = maps[index]
         return self.grid
     
     def get_terrain(self, position):
