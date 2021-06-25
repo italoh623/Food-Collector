@@ -31,7 +31,7 @@ class Map():
         # print(self.grid)
         index = int(random(len(maps)))
         print("Mapa", index)
-        self.grid = maps[4]
+        self.grid = maps[index]
         return self.grid
     
     def get_terrain(self, position):
