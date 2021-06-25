@@ -6,6 +6,8 @@
 
 from Food import Food
 
+MAX_SPEED = 2
+
 class Vehicle():
 
     def __init__(self, x, y, vel):
@@ -13,7 +15,7 @@ class Vehicle():
         self.velocity = vel
         self.position = PVector(x, y)
         self.r = 6
-        self.maxspeed = 5
+        self.maxspeed = MAX_SPEED
         self.maxforce = 0.2
         self.food_location = PVector(-1,-1)
         self.score = 0
@@ -23,6 +25,16 @@ class Vehicle():
     
     def eat(self):
         self.score = self.score + 1
+    
+    def change_speed(self, type):
+        if type == -1:
+            self.velocity = PVector(-self.velocity.x, -self.velocity.y)
+        elif type == 0:
+            self.maxspeed = MAX_SPEED
+        elif type == 1:
+            self.maxspeed = MAX_SPEED * 0.5
+        elif type == 2:
+            self.maxspeed = MAX_SPEED * 0.3
     
     def checkCollision(self, food):
         foodPosition = food.getPosition()
@@ -52,9 +64,9 @@ class Vehicle():
     
     # A method that calculates a steering force towards a target
     # STEER = DESIRED MINUS VELOCITY
-    def arrive(self):
+    def arrive(self, location):
         
-        target = self.food_location
+        target = location
         # A vector pointing from the location to the target
         desired = target - self.position
         d = desired.mag()
@@ -67,6 +79,21 @@ class Vehicle():
             desired.setMag(self.maxspeed)
 
         # Steering = Desired minus velocity
+        steer = desired - self.velocity
+        steer.limit(self.maxforce)  # Limit to maximum steering force
+
+        self.applyForce(steer)
+    
+    # A method that calculates a steering force towards a target
+    # STEER = DESIRED MINUS VELOCITY
+    def seek(self, target):
+
+        # A vector pointing from the location to the target
+        desired = target - self.position
+
+        # Scale to maximum speed
+        desired.setMag(self.maxspeed)
+
         steer = desired - self.velocity
         steer.limit(self.maxforce)  # Limit to maximum steering force
 
@@ -89,7 +116,7 @@ class Vehicle():
     def display(self):
         # Draw a triangle rotated in the direction of velocity
         fill(0)
-        text('Score = ' + str(self.score), 10, 10)
+        # text('Score = ' + str(self.score), 10, 10)
         theta = self.velocity.heading() + PI / 2
         fill(127)
         noStroke()
