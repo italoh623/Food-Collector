@@ -9,6 +9,7 @@
 from Vehicle import Vehicle
 from Map import Map
 from Food import Food
+import time
 
 def setup():
     size(640, 360)
@@ -19,7 +20,7 @@ def setup():
     global food
     
     velocity = PVector(0, 0)
-    vehicle = Vehicle(50, height - 50, velocity)
+    vehicle = Vehicle(40, height - 40, velocity)
     x = random(640)
     y = random(360)
     food = Food(x, y)
@@ -33,17 +34,20 @@ def draw():
     mapa.plot()
     
     
-    if (vehicle.checkCollision(food)):
-        food.changePosition()
-        vehicle.eat()
-        vehicle.food_location = PVector(-1,-1)
+    # if (vehicle.checkCollision(food)):
+    #     food.changePosition()
+    #     vehicle.eat()
+    #     vehicle.food_location = PVector(-1,-1)
         
-    food.display()
+    # food.display()
     
     vehicle.update()
     vehicle.change_speed(mapa.get_terrain(vehicle.getPosition()))
-    vehicle.display()
+    
+    vehicle.draw_path([PVector(2,16), PVector(3,16), PVector(4,16), PVector(5,16), PVector(6,16), PVector(7,16), PVector(8,16), PVector(9,16)])
 
+    
+    vehicle.display()
 
 def keyTyped():
     print(key)
@@ -55,3 +59,5 @@ def keyTyped():
         vehicle.applyForce(PVector(0.0,-0.1))
     elif key == 's':
         vehicle.applyForce(PVector(0.0,0.1))
+    elif key == 'p':
+        vehicle.walk_path([PVector(2,16), PVector(3,16), PVector(4,16), PVector(5,16), PVector(6,16), PVector(7,16), PVector(8,16), PVector(9,16)])

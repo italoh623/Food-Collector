@@ -5,8 +5,10 @@
 # The "Vehicle" class
 
 from Food import Food
+import time
 
 MAX_SPEED = 2
+TILE_SIZE = 20
 
 class Vehicle():
 
@@ -87,7 +89,6 @@ class Vehicle():
     # A method that calculates a steering force towards a target
     # STEER = DESIRED MINUS VELOCITY
     def seek(self, target):
-
         # A vector pointing from the location to the target
         desired = target - self.position
 
@@ -128,4 +129,34 @@ class Vehicle():
             vertex(0, -self.r * 2)
             vertex(-self.r, self.r * 2)
             vertex(self.r, self.r * 2)
-            endShape(CLOSE)    
+            endShape(CLOSE)   
+            
+   
+    def draw_path(self, path):
+        """Receives path based on the grid matrix
+            -> draws the path
+        """
+        stroke(0)
+        for i in range(0,len(path)-1):
+             p1 = path[i] * TILE_SIZE
+             p2 = path[i+1] * TILE_SIZE
+             line(p1.x + TILE_SIZE/2, 
+                  p1.y + TILE_SIZE/2, 
+                  p2.x + TILE_SIZE/2, 
+                  p2.y + TILE_SIZE/2)
+    
+    def walk_path(self, path):
+        for p in path:
+            self.display()
+            p *= TILE_SIZE
+            target = PVector(p.x + TILE_SIZE/2, p.y + TILE_SIZE/2)
+            self.drive_to(target)
+            time.sleep(0.5)
+            
+            
+    def drive_to(self, target):
+        print(target)
+        self.position = target
+        
+    
+             
