@@ -5,10 +5,10 @@ class Map():
     def __init__(self):
         self.tile_size = 20
         self.grid = []
-        self.wall_color = color(127)
-        self.sand_color = color(240)
-        self.water_color = color(0,0,255)
-        self.atoleiro = color(100,0,0)
+        self.wall_color = color(51,51,51)
+        self.sand_color = color(255,248,220)
+        self.water_color = color(0,102,153)
+        self.atoleiro = color(139,69,19)
     
     def make_grid(self):
         # for i in range(0, width, self.tile_size):
