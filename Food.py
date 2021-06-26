@@ -1,4 +1,5 @@
 # The "Food" class
+import math
 
 class Food():
 
@@ -11,8 +12,21 @@ class Food():
         return self.position
     
     # Method to update location
-    def changePosition(self):
-        self.position = PVector(random(640), random(360))
+    def changePosition(self, mapa):
+        PositionX = random(width)
+        PositionY = random(height)
+        
+        x = int(math.floor(PositionX / mapa.tile_size))
+        y = int(math.floor(PositionY / mapa.tile_size))
+        
+        while mapa.grid[x][y] != 0:
+            PositionX = random(width)
+            PositionY = random(height)
+            
+            x = int(math.floor(PositionX / mapa.tile_size))
+            y = int(math.floor(PositionY / mapa.tile_size))
+        
+        self.position = PVector(x * mapa.tile_size, y * mapa.tile_size)
 
     def display(self):
         # Draw a triangle rotated in the direction of velocity

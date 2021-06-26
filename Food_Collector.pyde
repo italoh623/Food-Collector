@@ -13,28 +13,25 @@ from Food import Food
 def setup():
     size(640, 360)
     
-    #Constants
-    global vehicle
     global mapa
+    global vehicle
     global food
-    
-    velocity = PVector(0, 0)
-    vehicle = Vehicle(50, height - 50, velocity)
-    x = random(640)
-    y = random(360)
-    food = Food(x, y)
     
     mapa = Map()
     mapa.make_grid()
     
+    velocity = PVector(0, 0)
+    vehicle = Vehicle(50, height - 50, velocity)
     
+    food = Food(0, 0)
+    food.changePosition(mapa)
 
 def draw():
     mapa.plot()
     
     
     if (vehicle.checkCollision(food)):
-        food.changePosition()
+        food.changePosition(mapa)
         vehicle.eat()
         vehicle.food_location = PVector(-1,-1)
         
