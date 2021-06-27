@@ -22,6 +22,7 @@ class Vehicle():
         self.food_location = PVector(-1,-1)
         self.score = 0
         self.path = []
+        self.speed = 0.5
     
     def set_path(self, path):
         self.path = path
@@ -34,13 +35,13 @@ class Vehicle():
     
     def change_speed(self, type):
         if type == -1:
-            self.velocity = PVector(-self.velocity.x, -self.velocity.y)
+            self.speed = 0.0
         elif type == 0:
-            self.maxspeed = MAX_SPEED
+            self.speed = 0.25
         elif type == 1:
-            self.maxspeed = MAX_SPEED * 0.5
+            self.speed = 0.5
         elif type == 2:
-            self.maxspeed = MAX_SPEED * 0.3
+            self.speed = 0.75
     
     def checkCollision(self, food):
         foodPosition = food.getPosition()

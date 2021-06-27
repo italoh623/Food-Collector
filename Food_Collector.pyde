@@ -54,7 +54,7 @@ def draw():
     
     vehicle.display()
     
-    time.sleep(0.5)
+    time.sleep(vehicle.speed)
 
 def keyTyped():
     print(key)
