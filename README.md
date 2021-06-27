@@ -9,8 +9,8 @@ A simple autonomous agent to collect food
  - [x] Andar pelo caminho
  - [x] BFS
  - [ ] DFS
- - [ ] Custo uniforme
- - [ ] Guloso
+ - [x] Custo uniforme
+ - [x] Guloso
  - [X] A*
  - [x] Traçado do caminho
 

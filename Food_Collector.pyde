@@ -91,3 +91,10 @@ def keyTyped():
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
+    elif key == '4':
+        algoritmo = "Algoritmo: Guloso"
+        text(algoritmo, 30, 30)
+        print(algoritmo)
+        search_type = key
+        path = a_search.search(search_type, food, mapa, vehicle)
+        vehicle.set_path(path)
