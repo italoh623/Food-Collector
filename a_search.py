@@ -269,7 +269,7 @@ def a_search(food, mapa, vehicle):
     a_food = food.position/mapa.tile_size
     a_vehicle = vehicle.position/mapa.tile_size
 
-    start, goal = (a_vehicle[0]-0.5, a_vehicle[1]-0.5), (a_food[0], a_food[1])
+    start, goal = (floor(a_vehicle[0]), floor(a_vehicle[1])), (a_food[0], a_food[1])
     
     mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
     mapa_a.walls = mapa.wall_positions
@@ -282,3 +282,17 @@ def a_search(food, mapa, vehicle):
     #draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal) 
     return reconstruct_path(came_from, start=start, goal=goal)
+
+def bfs_search(food, mapa, vehicle): 
+    a_food = food.position/mapa.tile_size
+    a_vehicle = vehicle.position/mapa.tile_size
+
+    start, goal = (floor(a_vehicle[0]), floor(a_vehicle[1])), (a_food[0], a_food[1])
+    
+    mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
+    mapa_a.walls = mapa.wall_positions
+    
+    parents = breadth_first_search(mapa_a, start, goal)
+    #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
+    #draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
+    return reconstruct_path(parents, start=start, goal=goal)
