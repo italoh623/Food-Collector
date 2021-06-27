@@ -11,7 +11,7 @@ A simple autonomous agent to collect food
  - [ ] DFS
  - [ ] Custo uniforme
  - [ ] Guloso
- - [ ] A*
+ - [X] A*
  - [ ] Traçado do caminho
 
 # Colaborators 

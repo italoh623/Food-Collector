@@ -9,6 +9,9 @@ class Map():
         self.sand_color = color(255,248,220)
         self.water_color = color(0,102,153)
         self.atoleiro = color(139,69,19)
+        self.wall_positions = []
+        self.water_positions = []
+        self.atoleiro_positions = []
     
     def make_grid(self):
         # for i in range(0, width, self.tile_size):
@@ -32,6 +35,15 @@ class Map():
         index = int(random(len(maps)))
         print("Mapa", index)
         self.grid = maps[index]
+       
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[i])):
+                if(self.grid[i][j] == -1): self.wall_positions.append((i,j))
+
+                if(self.grid[i][j] == 1):self.atoleiro_positions.append((i,j))
+                
+                if(self.grid[i][j] == 2):self.water_positions.append((i,j))
+        
         return self.grid
     
     def get_terrain(self, position):

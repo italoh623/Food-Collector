@@ -9,13 +9,14 @@
 from Vehicle import Vehicle
 from Map import Map
 from Food import Food
-
+import a_search
 def setup():
     size(640, 360)
     
     global mapa
     global vehicle
     global food
+    global path
     
     mapa = Map()
     mapa.make_grid()
@@ -26,10 +27,11 @@ def setup():
     food = Food(0, 0)
     food.changePosition(mapa)
 
+    path = a_search.a_search(food, mapa, vehicle)
+    
 def draw():
     mapa.plot()
-    
-    
+
     if (vehicle.checkCollision(food)):
         food.changePosition(mapa)
         vehicle.eat()
