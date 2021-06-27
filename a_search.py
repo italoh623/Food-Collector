@@ -315,3 +315,38 @@ def dijkstra(food, mapa, vehicle):
     #draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal)
     return reconstruct_path(came_from, start=start, goal=goal)    
+
+def heuristc_algorithm(graph, start , goal):
+    frontier = PriorityQueue()
+    frontier.put(start, 0)
+    came_from = dict()
+    came_from[start] = None
+    
+    while not frontier.empty():
+        current = frontier.get()
+    
+        if current == goal:
+            break
+        for next in graph.neighbors(current):
+            if next not in came_from:
+                priority = heuristic(goal, next)
+                frontier.put(next, priority)
+                came_from[next] = current
+    return came_from
+                
+def heuristc_search(food, mapa, vehicle): 
+    a_food = food.position/mapa.tile_size
+    a_vehicle = vehicle.position/mapa.tile_size
+
+    start, goal = (floor(a_vehicle[0]), floor(a_vehicle[1])), (a_food[0], a_food[1])
+    
+    mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
+    mapa_a.walls = mapa.wall_positions
+    mapa_a.weights.update({loc: 5 for loc in mapa.atoleiro_positions})
+    mapa_a.weights.update({loc: 10 for loc in mapa.water_positions})
+
+    came_from =  heuristc_algorithm(mapa_a, start, goal)
+    draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
+    draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
+    #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal)
+    return reconstruct_path(came_from, start=start, goal=goal)    
