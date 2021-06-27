@@ -41,6 +41,20 @@ class Queue:
     
     def get(self):
         return self.elements.popleft()
+    
+
+class Stack:
+    def __init__(self):
+        self.elements = []
+    
+    def empty(self):
+        return not self.elements
+    
+    def push(self, x):
+        self.elements.append(x)
+    
+    def pop(self):
+        return self.elements.pop()
 
 # utility functions for dealing with square grids
 def from_id_width(id, width):
@@ -216,6 +230,25 @@ def a_star_search(graph, start , goal ):
     
     return came_from, cost_so_far
 
+def dfs(graph, start , goal ):
+    frontier = Stack()
+    frontier.push(start)
+    came_from = {}
+    came_from[start] = None
+    
+    while not frontier.empty():
+        current  = frontier.pop()
+        
+        if current == goal:
+            break
+        
+        for next in graph.neighbors(current):
+            if next not in came_from:
+                frontier.push(next)
+                came_from[next] = current
+    
+    return came_from
+
 def breadth_first_search(graph, start , goal ):
     frontier = Queue()
     frontier.put(start)
@@ -297,6 +330,20 @@ def bfs_search(food, mapa, vehicle):
     #draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
     return reconstruct_path(parents, start=start, goal=goal)
 
+def dfs_search(food, mapa, vehicle): 
+    a_food = food.position/mapa.tile_size
+    a_vehicle = vehicle.position/mapa.tile_size
+
+    start, goal = (floor(a_vehicle[0]), floor(a_vehicle[1])), (a_food[0], a_food[1])
+    
+    mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
+    mapa_a.walls = mapa.wall_positions
+    
+    parents = dfs(mapa_a, start, goal)
+    #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
+    draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
+    return reconstruct_path(parents, start=start, goal=goal)
+
 def dijkstra(food, mapa, vehicle): 
     a_food = food.position/mapa.tile_size
     a_vehicle = vehicle.position/mapa.tile_size
@@ -323,6 +370,8 @@ def search(type, food, mapa, vehicle):
         return dijkstra(food, mapa, vehicle)
     elif type == "4":
         return heuristc_search(food, mapa, vehicle)
+    elif type == "5":
+        return dfs_search(food, mapa, vehicle)
 
 def heuristc_algorithm(graph, start , goal):
     frontier = PriorityQueue()

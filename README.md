@@ -8,7 +8,7 @@ A simple autonomous agent to collect food
  - [x] Corrigir aparição da comida (não aparecer dentro de parede, água ou atoleiro)
  - [x] Andar pelo caminho
  - [x] BFS
- - [ ] DFS
+ - [x] DFS
  - [x] Custo uniforme
  - [x] Guloso
  - [X] A*

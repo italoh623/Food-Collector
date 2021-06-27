@@ -95,6 +95,12 @@ def keyTyped():
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
+    elif key == '5':
+        set_algoritmo("Algoritmo: DFS")
+        print(algoritmo)
+        search_type = key
+        path = a_search.search(search_type, food, mapa, vehicle)
+        vehicle.set_path(path)
 
 def set_algoritmo(new_algoritmo):
     global algoritmo 
