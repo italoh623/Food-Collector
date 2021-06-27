@@ -6,6 +6,7 @@
 
 from Food import Food
 import time
+import math
 
 MAX_SPEED = 2
 TILE_SIZE = 20
@@ -23,7 +24,7 @@ class Vehicle():
         self.score = 0
         self.path = []
         self.speed = 0.5
-        self.angle = PVector(0, 0)
+        self.angle = PI/2
     
     def set_path(self, path):
         self.path = path
@@ -70,8 +71,18 @@ class Vehicle():
                     return
     
     def set_angle(self, p):
-        ang = (self.position.x-p[0], self.position.y-p[1])
-        self.angle = PVector(ang[0], ang[1])
+        positionX = int(math.floor(self.position.x / TILE_SIZE))
+        positionY = int(math.floor(self.position.y / TILE_SIZE))
+        ang = (positionX - p[0], positionY - p[1])
+        print(ang)
+        if ang == (1,0):
+            self.angle = -PI/2
+        elif ang == (0,1):
+            self.angle = 0.0
+        elif ang == (-1,0):
+            self.angle = PI/2
+        elif ang == (0,-1):
+            self.angle = PI
     
     # A method that calculates a steering force towards a target
     # STEER = DESIRED MINUS VELOCITY
@@ -126,8 +137,8 @@ class Vehicle():
     def display(self):
         # Draw a triangle rotated in the direction of velocity
         fill(0)
-        theta = self.velocity.heading() + PI / 2
-        print(theta)
+        theta = self.angle
+        # print(theta)
         fill(127)
         noStroke()
         strokeWeight(1)
