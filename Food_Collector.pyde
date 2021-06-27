@@ -19,19 +19,20 @@ def setup():
     global vehicle
     global food
     global path
+    global search_type
+    
+    search_type = "1"
     
     mapa = Map()
     mapa.make_grid()
     
     velocity = PVector(0, 0)
     vehicle = Vehicle(50, height - 50, velocity)
-    vehicle.set_path([PVector(2,16), PVector(3,16), PVector(4,16), PVector(5,16), PVector(6,16), PVector(7,16), PVector(8,16), PVector(9,16)])
     
     food = Food(0, 0)
     food.changePosition(mapa)
 
-    path = a_search.bfs_search(food, mapa, vehicle)
-    # path = a_search.a_search(food, mapa, vehicle)
+    path = a_search.search(search_type, food, mapa, vehicle)
     vehicle.set_path(path)
     
 def draw():
@@ -41,13 +42,13 @@ def draw():
         food.changePosition(mapa)
         vehicle.eat()
         vehicle.food_location = PVector(-1,-1)
-        path = a_search.bfs_search(food, mapa, vehicle)
+        path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     
     vehicle.update()
     vehicle.change_speed(mapa.get_terrain(vehicle.getPosition()))
-    
     food.display()
+    
     if vehicle.path:
         vehicle.draw_path()
         vehicle.drive()
@@ -66,5 +67,13 @@ def keyTyped():
         vehicle.applyForce(PVector(0.0,-0.1))
     elif key == 's':
         vehicle.applyForce(PVector(0.0,0.1))
-    elif key == 'p':
-        vehicle.walk_path([PVector(2,16), PVector(3,16), PVector(4,16), PVector(5,16), PVector(6,16), PVector(7,16), PVector(8,16), PVector(9,16)])
+    elif key == '1':
+        print("BFS")
+        search_type = key
+        path = a_search.search(search_type, food, mapa, vehicle)
+        vehicle.set_path(path)
+    elif key == '2':
+        print("A*")
+        search_type = key
+        path = a_search.search(search_type, food, mapa, vehicle)
+        vehicle.set_path(path)

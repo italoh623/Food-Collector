@@ -296,3 +296,9 @@ def bfs_search(food, mapa, vehicle):
     #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
     #draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
     return reconstruct_path(parents, start=start, goal=goal)
+
+def search(type, food, mapa, vehicle):
+    if type == "1":
+        return bfs_search(food, mapa, vehicle)
+    elif type == "2":
+        return a_search(food, mapa, vehicle)
