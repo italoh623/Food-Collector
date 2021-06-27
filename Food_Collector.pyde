@@ -28,7 +28,7 @@ def setup():
     food.changePosition(mapa)
 
    # path = a_search.bfs_search(food, mapa, vehicle)
-    path = a_search.a_search(food, mapa, vehicle)
+    path = a_search.dijkstra(food, mapa, vehicle)
     
 def draw():
     mapa.plot()
