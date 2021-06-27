@@ -6,13 +6,13 @@ A simple autonomous agent to collect food
  - [x] Criar Mapas - 5
  - [x] Função para escolher mapas
  - [x] Corrigir aparição da comida (não aparecer dentro de parede, água ou atoleiro)
- - [ ] Andar pelo caminho
+ - [x] Andar pelo caminho
  - [ ] BFS
  - [ ] DFS
  - [ ] Custo uniforme
  - [ ] Guloso
  - [X] A*
- - [ ] Traçado do caminho
+ - [x] Traçado do caminho
 
 # Colaborators 
 
