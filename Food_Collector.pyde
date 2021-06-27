@@ -39,6 +39,7 @@ def setup():
     
 def draw():
     mapa.plot()
+    print(algoritmo)
     text(algoritmo, 30, 30)
 
     if (vehicle.checkCollision(food)):
@@ -71,30 +72,30 @@ def keyTyped():
     elif key == 's':
         vehicle.applyForce(PVector(0.0,0.1))
     elif key == '1':
-        algoritmo = "Algoritmo: BFS"
-        text(algoritmo, 30, 30)
+        set_algoritmo("Algoritmo: BFS")
         print(algoritmo)
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '2':
-        algoritmo = "Algoritmo: A*"
-        text(algoritmo, 30, 30)
+        set_algoritmo("Algoritmo: A*")
         print(algoritmo)
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '3':
-        algoritmo = "Algoritmo: Uniforme"
-        text(algoritmo, 30, 30)
+        set_algoritmo("Algoritmo: Uniforme")
         print(algoritmo)
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '4':
-        algoritmo = "Algoritmo: Guloso"
-        text(algoritmo, 30, 30)
+        set_algoritmo("Algoritmo: Guloso")
         print(algoritmo)
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
+
+def set_algoritmo(new_algoritmo):
+    global algoritmo 
+    algoritmo = new_algoritmo
