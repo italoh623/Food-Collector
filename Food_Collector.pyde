@@ -30,6 +30,7 @@ def setup():
     food = Food(0, 0)
     food.changePosition(mapa)
 
+   # path = a_search.bfs_search(food, mapa, vehicle)
     path = a_search.a_search(food, mapa, vehicle)
     vehicle.set_path(path)
     
