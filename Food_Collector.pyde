@@ -30,8 +30,8 @@ def setup():
     food = Food(0, 0)
     food.changePosition(mapa)
 
-   # path = a_search.bfs_search(food, mapa, vehicle)
-    path = a_search.a_search(food, mapa, vehicle)
+    path = a_search.bfs_search(food, mapa, vehicle)
+    # path = a_search.a_search(food, mapa, vehicle)
     vehicle.set_path(path)
     
 def draw():
@@ -41,7 +41,7 @@ def draw():
         food.changePosition(mapa)
         vehicle.eat()
         vehicle.food_location = PVector(-1,-1)
-        path = a_search.a_search(food, mapa, vehicle)
+        path = a_search.bfs_search(food, mapa, vehicle)
         vehicle.set_path(path)
     
     vehicle.update()

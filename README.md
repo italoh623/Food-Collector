@@ -7,7 +7,7 @@ A simple autonomous agent to collect food
  - [x] Função para escolher mapas
  - [x] Corrigir aparição da comida (não aparecer dentro de parede, água ou atoleiro)
  - [x] Andar pelo caminho
- - [ ] BFS
+ - [x] BFS
  - [ ] DFS
  - [ ] Custo uniforme
  - [ ] Guloso
