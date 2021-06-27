@@ -21,6 +21,10 @@ class Vehicle():
         self.maxforce = 0.2
         self.food_location = PVector(-1,-1)
         self.score = 0
+        self.path = []
+    
+    def set_path(self, path):
+        self.path = path
 
     def getPosition(self):
         return self.position
@@ -132,29 +136,24 @@ class Vehicle():
             endShape(CLOSE)   
             
    
-    def draw_path(self, path):
+    def draw_path(self):
         """Receives path based on the grid matrix
             -> draws the path
         """
         stroke(0)
-        for i in range(0,len(path)-1):
-             p1 = path[i] * TILE_SIZE
-             p2 = path[i+1] * TILE_SIZE
-             line(p1.x + TILE_SIZE/2, 
-                  p1.y + TILE_SIZE/2, 
-                  p2.x + TILE_SIZE/2, 
-                  p2.y + TILE_SIZE/2)
-    
-    def walk_path(self, path):
-        for p in path:
-            self.display()
-            p *= TILE_SIZE
-            target = PVector(p.x + TILE_SIZE/2, p.y + TILE_SIZE/2)
-            self.drive_to(target)
-            time.sleep(0.5)
+        for i in range(0,len(self.path)-1):
+             p1 = self.path[i] * TILE_SIZE
+             p2 = self.path[i+1] * TILE_SIZE
+             line((p1[0] * TILE_SIZE) + TILE_SIZE/2, 
+                  (p1[1] * TILE_SIZE) + TILE_SIZE/2, 
+                  (p2[0] * TILE_SIZE) + TILE_SIZE/2, 
+                  (p2[1] * TILE_SIZE) + TILE_SIZE/2)
             
             
-    def drive_to(self, target):
+    def drive(self):
+        p = self.path.pop(0)
+        # p *= TILE_SIZE
+        target = PVector((p[0] * TILE_SIZE) + TILE_SIZE/2, (p[1] * TILE_SIZE) + TILE_SIZE/2)
         print(target)
         self.position = target
         

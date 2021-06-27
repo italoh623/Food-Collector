@@ -20,22 +20,18 @@ def setup():
     global food
     global path
     
-    velocity = PVector(0, 0)
-    vehicle = Vehicle(40, height - 40, velocity)
-    x = random(640)
-    y = random(360)
-    food = Food(x, y)
-    
     mapa = Map()
     mapa.make_grid()
     
     velocity = PVector(0, 0)
     vehicle = Vehicle(50, height - 50, velocity)
+    vehicle.set_path([PVector(2,16), PVector(3,16), PVector(4,16), PVector(5,16), PVector(6,16), PVector(7,16), PVector(8,16), PVector(9,16)])
     
     food = Food(0, 0)
     food.changePosition(mapa)
 
     path = a_search.a_search(food, mapa, vehicle)
+    vehicle.set_path(path)
     
 def draw():
     mapa.plot()
@@ -44,12 +40,20 @@ def draw():
         food.changePosition(mapa)
         vehicle.eat()
         vehicle.food_location = PVector(-1,-1)
+        path = a_search.a_search(food, mapa, vehicle)
+        vehicle.set_path(path)
     
     vehicle.update()
     vehicle.change_speed(mapa.get_terrain(vehicle.getPosition()))
     
     food.display()
+    if vehicle.path:
+        vehicle.draw_path()
+        vehicle.drive()
+    
     vehicle.display()
+    
+    time.sleep(0.5)
 
 def keyTyped():
     print(key)

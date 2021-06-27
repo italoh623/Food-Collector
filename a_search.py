@@ -279,6 +279,6 @@ def a_search(food, mapa, vehicle):
     came_from, cost_so_far = a_star_search(mapa_a, start, goal)
     
     #draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
-    #draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
+    draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal) 
     return reconstruct_path(came_from, start=start, goal=goal)
