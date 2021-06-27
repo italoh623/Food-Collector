@@ -23,6 +23,7 @@ class Vehicle():
         self.score = 0
         self.path = []
         self.speed = 0.5
+        self.angle = PVector(0, 0)
     
     def set_path(self, path):
         self.path = path
@@ -67,7 +68,10 @@ class Vehicle():
                     self.food_location = PVector(x + food.r/2,y + food.r/2)
                     print('found food on' + str(self.food_location))
                     return
-                
+    
+    def set_angle(self, p):
+        ang = (self.position.x-p[0], self.position.y-p[1])
+        self.angle = PVector(ang[0], ang[1])
     
     # A method that calculates a steering force towards a target
     # STEER = DESIRED MINUS VELOCITY
@@ -122,8 +126,8 @@ class Vehicle():
     def display(self):
         # Draw a triangle rotated in the direction of velocity
         fill(0)
-        # text('Score = ' + str(self.score), 10, 10)
         theta = self.velocity.heading() + PI / 2
+        print(theta)
         fill(127)
         noStroke()
         strokeWeight(1)
@@ -153,7 +157,7 @@ class Vehicle():
             
     def drive(self):
         p = self.path.pop(0)
-        # p *= TILE_SIZE
+        self.set_angle(p)
         target = PVector((p[0] * TILE_SIZE) + TILE_SIZE/2, (p[1] * TILE_SIZE) + TILE_SIZE/2)
         print(target)
         self.position = target

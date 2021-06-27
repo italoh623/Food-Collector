@@ -20,8 +20,10 @@ def setup():
     global food
     global path
     global search_type
+    global algoritmo
     
     search_type = "1"
+    algoritmo = "Algoritmo: BFS"
     
     mapa = Map()
     mapa.make_grid()
@@ -37,6 +39,7 @@ def setup():
     
 def draw():
     mapa.plot()
+    text(algoritmo, 30, 30)
 
     if (vehicle.checkCollision(food)):
         food.changePosition(mapa)
@@ -47,12 +50,12 @@ def draw():
     
     vehicle.update()
     vehicle.change_speed(mapa.get_terrain(vehicle.getPosition()))
-    food.display()
     
     if vehicle.path:
         vehicle.draw_path()
         vehicle.drive()
     
+    food.display()
     vehicle.display()
     
     time.sleep(vehicle.speed)
@@ -68,12 +71,23 @@ def keyTyped():
     elif key == 's':
         vehicle.applyForce(PVector(0.0,0.1))
     elif key == '1':
-        print("BFS")
+        algoritmo = "Algoritmo: BFS"
+        text(algoritmo, 30, 30)
+        print(algoritmo)
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '2':
-        print("A*")
+        algoritmo = "Algoritmo: A*"
+        text(algoritmo, 30, 30)
+        print(algoritmo)
+        search_type = key
+        path = a_search.search(search_type, food, mapa, vehicle)
+        vehicle.set_path(path)
+    elif key == '3':
+        algoritmo = "Algoritmo: Uniforme"
+        text(algoritmo, 30, 30)
+        print(algoritmo)
         search_type = key
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
