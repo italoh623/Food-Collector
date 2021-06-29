@@ -19,7 +19,7 @@ class Food():
         x = int(math.floor(PositionX / mapa.tile_size))
         y = int(math.floor(PositionY / mapa.tile_size))
         
-        while mapa.grid[x][y] != 0:
+        while mapa.grid[x][y] == -1:
             PositionX = random(width)
             PositionY = random(height)
             
