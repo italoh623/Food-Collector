@@ -41,9 +41,9 @@ class Vehicle():
         elif type == 0:
             self.speed = 0.25
         elif type == 1:
-            self.speed = 0.5
+            self.speed = 0.45
         elif type == 2:
-            self.speed = 0.75
+            self.speed = 0.8
     
     def checkCollision(self, food):
         foodPosition = food.getPosition()
