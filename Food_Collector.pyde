@@ -12,6 +12,8 @@ from Food import Food
 import a_search
 import time
 
+quantidade = 0
+
 def setup():
     size(640, 360)
     
@@ -48,6 +50,8 @@ def draw():
         vehicle.food_location = PVector(-1,-1)
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
+        global quantidade
+        quantidade = quantidade + 1
     
     vehicle.update()
     vehicle.change_speed(mapa.get_terrain(vehicle.getPosition()))
@@ -58,6 +62,14 @@ def draw():
     
     food.display()
     vehicle.display()
+    
+    fill(255, 255, 255)
+    noStroke()
+    strokeWeight(1)
+    with pushMatrix():
+        translate(400, 15)
+        string = str(quantidade) + " Comida(s) foram coletadas"
+        text(string, 0,0)
     
     time.sleep(vehicle.speed)
 
@@ -99,6 +111,29 @@ def keyTyped():
         set_algoritmo("Algoritmo: DFS")
         print(algoritmo)
         search_type = key
+        path = a_search.search(search_type, food, mapa, vehicle)
+        vehicle.set_path(path)
+    elif key == 'c':
+        food.changePosition(mapa)
+        #vehicle.eat()
+        vehicle.food_location = PVector(-1,-1)
+        path = a_search.search(search_type, food, mapa, vehicle)
+        vehicle.set_path(path)
+    elif key == 'r':
+        global mapa
+        global vehicle
+        global food
+        global path
+        global search_type
+        global algoritmo
+        mapa = Map()
+        mapa.make_grid()
+        
+        #search_type = "1"
+        set_algoritmo(algoritmo)
+        
+        food.changePosition(mapa)
+
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
 
