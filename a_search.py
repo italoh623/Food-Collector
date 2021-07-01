@@ -6,6 +6,7 @@
 
 # some of these types are deprecated: https://www.python.org/dev/peps/pep-0585/
 
+import time
 
 class Graph():
     def neighbors(self, id ): pass
@@ -230,7 +231,7 @@ def a_star_search(graph, start , goal ):
     
     return came_from, cost_so_far
 
-def dfs(graph, start , goal ):
+def depth_first_search(graph, start , goal):
     frontier = Stack()
     frontier.push(start)
     came_from = {}
@@ -243,13 +244,15 @@ def dfs(graph, start , goal ):
             break
         
         for next in graph.neighbors(current):
+            # print(next)
             if next not in came_from:
                 frontier.push(next)
                 came_from[next] = current
-    
+        
+        
     return came_from
 
-def breadth_first_search(graph, start , goal ):
+def breadth_first_search(graph, start , goal):
     frontier = Queue()
     frontier.put(start)
     came_from = {}
@@ -339,7 +342,7 @@ def dfs_search(food, mapa, vehicle):
     mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
     mapa_a.walls = mapa.wall_positions
     
-    parents = dfs(mapa_a, start, goal)
+    parents = depth_first_search(mapa_a, start, goal)
     #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
     draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
     return reconstruct_path(parents, start=start, goal=goal)
