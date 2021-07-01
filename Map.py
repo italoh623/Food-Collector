@@ -6,8 +6,8 @@ class Map():
         self.tile_size = 20
         self.grid = []
         self.wall_color = color(51,51,51)
-        self.sand_color = [color(255,248,220), color(255,248,200), color(255,248,100)]
-        self.water_color = [color(0,102,153), color(0,102,100), color(0,102,50)]
+        self.sand_color = [color(255,248,220), color(255,248,180), color(255,248,100)]
+        self.water_color = [color(0,102,153), color(0,70,153), color(0,50,153)]
         self.atoleiro = [color(139,69,19), color(139,40,19), color(139,20,19)]
         self.wall_positions = []
         self.water_positions = []
@@ -45,11 +45,15 @@ class Map():
                 
                 if(self.grid[i][j] == 2):self.water_positions.append((i,j))
         
+        self.clean_path_grid()
+        
+        return self.grid
+    
+    def clean_path_grid(self):
         self.path_grid = []
         for i in range(len(self.grid)):
             self.path_grid.append( [0] * len(self.grid[i]) )
-        
-        return self.grid
+    
     
     def get_terrain(self, position):
         x = math.floor(position.x/self.tile_size)

@@ -48,6 +48,7 @@ def draw():
         food.changePosition(mapa)
         vehicle.eat()
         vehicle.food_location = PVector(-1,-1)
+        mapa.clean_path_grid()
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
         global quantidade
@@ -87,34 +88,40 @@ def keyTyped():
         set_algoritmo("Algoritmo: BFS")
         print(algoritmo)
         search_type = key
+        mapa.clean_path_grid()
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '2':
         set_algoritmo("Algoritmo: A*")
         print(algoritmo)
         search_type = key
+        mapa.clean_path_grid()
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '3':
         set_algoritmo("Algoritmo: Uniforme")
         print(algoritmo)
         search_type = key
+        mapa.clean_path_grid()
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '4':
         set_algoritmo("Algoritmo: Guloso")
         print(algoritmo)
         search_type = key
+        mapa.clean_path_grid()
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == '5':
         set_algoritmo("Algoritmo: DFS")
         print(algoritmo)
         search_type = key
+        mapa.clean_path_grid()
         path = a_search.search(search_type, food, mapa, vehicle)
         vehicle.set_path(path)
     elif key == 'c':
         food.changePosition(mapa)
+        mapa.clean_path_grid()
         #vehicle.eat()
         vehicle.food_location = PVector(-1,-1)
         path = a_search.search(search_type, food, mapa, vehicle)

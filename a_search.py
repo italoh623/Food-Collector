@@ -165,7 +165,7 @@ class PriorityQueue:
     def get(self):
         return heapq.heappop(self.elements)[1]
 
-def dijkstra_search(graph, start , goal):
+def dijkstra_search(graph, start , goal, mapa):
     frontier = PriorityQueue()
     frontier.put(start, 0)
     came_from = {}
@@ -180,6 +180,8 @@ def dijkstra_search(graph, start , goal):
             break
         
         for next in graph.neighbors(current):
+            mapa.path_grid[next[0]][next[1]] = 1
+            mapa.path_grid[current[0]][current[1]] = 2
             new_cost = cost_so_far[current] + graph.cost(current, next)
             if next not in cost_so_far or new_cost < cost_so_far[next]:
                 cost_so_far[next] = new_cost
@@ -207,7 +209,7 @@ def heuristic(a, b):
     (x2, y2) = b
     return abs(x1 - x2) + abs(y1 - y2)
 
-def a_star_search(graph, start , goal ):
+def a_star_search(graph, start , goal, mapa):
     frontier = PriorityQueue()
     frontier.put(start, 0)
     came_from = {}
@@ -222,6 +224,8 @@ def a_star_search(graph, start , goal ):
             break
         
         for next in graph.neighbors(current):
+            mapa.path_grid[next[0]][next[1]] = 1
+            mapa.path_grid[current[0]][current[1]] = 2
             new_cost = cost_so_far[current] + graph.cost(current, next)
             if next not in cost_so_far or new_cost < cost_so_far[next]:
                 cost_so_far[next] = new_cost
@@ -231,7 +235,7 @@ def a_star_search(graph, start , goal ):
     
     return came_from, cost_so_far
 
-def depth_first_search(graph, start , goal):
+def depth_first_search(graph, start , goal, mapa):
     frontier = Stack()
     frontier.push(start)
     came_from = {}
@@ -244,15 +248,15 @@ def depth_first_search(graph, start , goal):
             break
         
         for next in graph.neighbors(current):
-            # print(next)
+            mapa.path_grid[next[0]][next[1]] = 1
+            mapa.path_grid[current[0]][current[1]] = 2
             if next not in came_from:
                 frontier.push(next)
                 came_from[next] = current
         
-        
     return came_from
 
-def breadth_first_search(graph, start , goal):
+def breadth_first_search(graph, start , goal, mapa):
     frontier = Queue()
     frontier.put(start)
     came_from = {}
@@ -265,6 +269,8 @@ def breadth_first_search(graph, start , goal):
             break
         
         for next in graph.neighbors(current):
+            mapa.path_grid[next[0]][next[1]] = 1
+            mapa.path_grid[current[0]][current[1]] = 2
             if next not in came_from:
                 frontier.put(next)
                 came_from[next] = current
@@ -312,7 +318,7 @@ def a_search(food, mapa, vehicle):
     mapa_a.weights.update({loc: 5 for loc in mapa.atoleiro_positions})
     mapa_a.weights.update({loc: 10 for loc in mapa.water_positions})
     
-    came_from, cost_so_far = a_star_search(mapa_a, start, goal)
+    came_from, cost_so_far = a_star_search(mapa_a, start, goal, mapa)
     
     #draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
     draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
@@ -328,7 +334,7 @@ def bfs_search(food, mapa, vehicle):
     mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
     mapa_a.walls = mapa.wall_positions
     
-    parents = breadth_first_search(mapa_a, start, goal)
+    parents = breadth_first_search(mapa_a, start, goal, mapa)
     #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
     #draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
     return reconstruct_path(parents, start=start, goal=goal)
@@ -342,7 +348,7 @@ def dfs_search(food, mapa, vehicle):
     mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
     mapa_a.walls = mapa.wall_positions
     
-    parents = depth_first_search(mapa_a, start, goal)
+    parents = depth_first_search(mapa_a, start, goal, mapa)
     #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
     draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
     return reconstruct_path(parents, start=start, goal=goal)
@@ -358,7 +364,7 @@ def dijkstra(food, mapa, vehicle):
     mapa_a.weights.update({loc: 5 for loc in mapa.atoleiro_positions})
     mapa_a.weights.update({loc: 10 for loc in mapa.water_positions})
 
-    came_from, cost_so_far = dijkstra_search(mapa_a, start, goal)
+    came_from, cost_so_far = dijkstra_search(mapa_a, start, goal, mapa)
     #draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
     #draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal)
@@ -376,7 +382,7 @@ def search(type, food, mapa, vehicle):
     elif type == "5":
         return dfs_search(food, mapa, vehicle)
 
-def heuristc_algorithm(graph, start , goal):
+def heuristc_algorithm(graph, start , goal, mapa):
     frontier = PriorityQueue()
     frontier.put(start, 0)
     came_from = dict()
@@ -387,8 +393,11 @@ def heuristc_algorithm(graph, start , goal):
     
         if current == goal:
             break
+        
         for next in graph.neighbors(current):
             if next not in came_from:
+                mapa.path_grid[next[0]][next[1]] = 1
+                mapa.path_grid[current[0]][current[1]] = 2
                 priority = heuristic(goal, next)
                 frontier.put(next, priority)
                 came_from[next] = current
@@ -405,7 +414,7 @@ def heuristc_search(food, mapa, vehicle):
     mapa_a.weights.update({loc: 5 for loc in mapa.atoleiro_positions})
     mapa_a.weights.update({loc: 10 for loc in mapa.water_positions})
 
-    came_from =  heuristc_algorithm(mapa_a, start, goal)
+    came_from =  heuristc_algorithm(mapa_a, start, goal, mapa)
     draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
     draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal)
