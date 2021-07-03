@@ -6,7 +6,6 @@
 
 # some of these types are deprecated: https://www.python.org/dev/peps/pep-0585/
 
-import time
 
 class Graph():
     def neighbors(self, id ): pass
@@ -165,31 +164,46 @@ class PriorityQueue:
     def get(self):
         return heapq.heappop(self.elements)[1]
 
-def dijkstra_search(graph, start , goal, mapa):
-    frontier = PriorityQueue()
-    frontier.put(start, 0)
-    came_from = {}
-    cost_so_far = {}
-    came_from[start] = None
-    cost_so_far[start] = 0
+def dijkstra_search(graph, start , goal, conjunto, contexto, sett, abd):
+    if(sett == 1):
+        frontier = contexto[0]
+        came_from = contexto[1]
+        cost_so_far = contexto[2]
+    else:
+        frontier = PriorityQueue()
+        frontier.put(start, 0)
+        came_from = {}
+        cost_so_far = {}
+        came_from[start] = None
+        cost_so_far[start] = 0
     
     while not frontier.empty():
         current  = frontier.get()
         
         if current == goal:
-            break
+            return contexto, came_from, 1
         
         for next in graph.neighbors(current):
-            mapa.path_grid[next[0]][next[1]] = 1
-            mapa.path_grid[current[0]][current[1]] = 2
             new_cost = cost_so_far[current] + graph.cost(current, next)
             if next not in cost_so_far or new_cost < cost_so_far[next]:
                 cost_so_far[next] = new_cost
                 priority = new_cost
                 frontier.put(next, priority)
                 came_from[next] = current
+                if(abd == 0):
+                    conjunto.append(next)
+        if(len(contexto) == 0):
+            contexto.append(frontier)
+            contexto.append(came_from)
+            contexto.append(cost_so_far)
+            #print('aaaa')
+        else:
+            contexto[0] = frontier
+            contexto[1] = came_from
+            contexto[2] = cost_so_far
+        return contexto, came_from, 0
     
-    return came_from, cost_so_far
+    return contexto, came_from, 1
 
 # thanks to @m1sp <Jaiden Mispy> for this simpler version of
 # reconstruct_path that doesn't have duplicate entries
@@ -209,73 +223,116 @@ def heuristic(a, b):
     (x2, y2) = b
     return abs(x1 - x2) + abs(y1 - y2)
 
-def a_star_search(graph, start , goal, mapa):
-    frontier = PriorityQueue()
-    frontier.put(start, 0)
-    came_from = {}
-    cost_so_far = {}
-    came_from[start] = None
-    cost_so_far[start] = 0
+def a_star_search(graph, start , goal, conjunto, contexto, sett, abd):
+    if(sett == 1):
+        frontier = contexto[0]
+        came_from = contexto[1]
+        cost_so_far = contexto[2]
+    else:
+        frontier = PriorityQueue()
+        frontier.put(start, 0)
+        came_from = {}
+        cost_so_far = {}
+        came_from[start] = None
+        cost_so_far[start] = 0
     
     while not frontier.empty():
         current  = frontier.get()
         
         if current == goal:
-            break
+            return contexto, came_from, 1
         
         for next in graph.neighbors(current):
-            mapa.path_grid[next[0]][next[1]] = 1
-            mapa.path_grid[current[0]][current[1]] = 2
             new_cost = cost_so_far[current] + graph.cost(current, next)
             if next not in cost_so_far or new_cost < cost_so_far[next]:
                 cost_so_far[next] = new_cost
                 priority = new_cost + heuristic(next, goal)
                 frontier.put(next, priority)
                 came_from[next] = current
-    
-    return came_from, cost_so_far
+                if(abd == 0):
+                    conjunto.append(next)
+        if(len(contexto) == 0):
+            contexto.append(frontier)
+            contexto.append(came_from)
+            contexto.append(cost_so_far)
+            #print('aaaa')
+        else:
+            contexto[0] = frontier
+            contexto[1] = came_from
+            contexto[2] = cost_so_far
+        return contexto, came_from, 0
+        
+    return contexto, came_from, 1
 
-def depth_first_search(graph, start , goal, mapa):
-    frontier = Stack()
-    frontier.push(start)
-    came_from = {}
-    came_from[start] = None
+def dfs(graph, start , goal, conjunto, contexto, sett, abd):
+    if(sett == 1):
+        frontier = contexto[0]
+        came_from = contexto[1]
+    else:
+        frontier = Stack()
+        frontier.push(start)
+        came_from = {}
+        came_from[start] = None
     
     while not frontier.empty():
         current  = frontier.pop()
         
         if current == goal:
-            break
+            return contexto, came_from, 1
         
         for next in graph.neighbors(current):
-            mapa.path_grid[next[0]][next[1]] = 1
-            mapa.path_grid[current[0]][current[1]] = 2
             if next not in came_from:
                 frontier.push(next)
                 came_from[next] = current
-        
-    return came_from
+                if(abd == 0):
+                    conjunto.append(next)
+        if(len(contexto) == 0):
+            contexto.append(frontier)
+            contexto.append(came_from)
+            contexto.append(current)
+            #print('aaaa')
+        else:
+            contexto[0] = frontier
+            contexto[1] = came_from
+            contexto[2] = current
+        return contexto, came_from, 0
+    
+    return contexto, came_from, 1
 
-def breadth_first_search(graph, start , goal, mapa):
-    frontier = Queue()
-    frontier.put(start)
-    came_from = {}
-    came_from[start] = None
+def breadth_first_search(graph, start , goal, conjunto, contexto, sett, abd):
+    if(sett == 1):
+        frontier = contexto[0]
+        came_from = contexto[1]
+    else:
+        frontier = Queue()
+        frontier.put(start)
+        came_from = {}
+        came_from[start] = None
     
     while not frontier.empty():
         current  = frontier.get()
         
         if current == goal:
-            break
+            return contexto, came_from, 1
         
         for next in graph.neighbors(current):
-            mapa.path_grid[next[0]][next[1]] = 1
-            mapa.path_grid[current[0]][current[1]] = 2
             if next not in came_from:
                 frontier.put(next)
                 came_from[next] = current
-    
-    return came_from
+                if(abd == 0):
+                    conjunto.append(next)
+        if(len(contexto) == 0):
+            contexto.append(frontier)
+            contexto.append(came_from)
+            contexto.append(current)
+            #print('aaaa')
+        else:
+            contexto[0] = frontier
+            contexto[1] = came_from
+            contexto[2] = current
+        return contexto, came_from, 0
+        
+    return contexto, came_from, 1
 
 class SquareGridNeighborOrder(SquareGrid):
     def neighbors(self, id):
@@ -307,7 +364,7 @@ class GridWithAdjustedWeights(GridWithWeights):
         if (x1 + y1) % 2 == 1 and y2 != y1: nudge = 1
         return prev_cost + 0.001 * nudge
 
-def a_search(food, mapa, vehicle): 
+def a_search(food, mapa, vehicle, conjunto, contexto, sett, abd): 
     a_food = food.position/mapa.tile_size
     a_vehicle = vehicle.position/mapa.tile_size
 
@@ -318,14 +375,13 @@ def a_search(food, mapa, vehicle):
     mapa_a.weights.update({loc: 5 for loc in mapa.atoleiro_positions})
     mapa_a.weights.update({loc: 10 for loc in mapa.water_positions})
     
-    came_from, cost_so_far = a_star_search(mapa_a, start, goal, mapa)
-    
+    context, came_from, valor = a_star_search(mapa_a, start, goal, conjunto, contexto, sett, abd)
     #draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
-    draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
+    #draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal) 
-    return reconstruct_path(came_from, start=start, goal=goal)
+    return context, came_from, valor
 
-def bfs_search(food, mapa, vehicle): 
+def bfs_search(food, mapa, vehicle, conjunto, contexto, sett): 
     a_food = food.position/mapa.tile_size
     a_vehicle = vehicle.position/mapa.tile_size
 
@@ -334,12 +390,14 @@ def bfs_search(food, mapa, vehicle):
     mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
     mapa_a.walls = mapa.wall_positions
     
-    parents = breadth_first_search(mapa_a, start, goal, mapa)
+    parents = breadth_first_search(mapa_a, start, goal, conjunto, contexto, sett)
+    #retornacontexto = 
+    
     #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
     #draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
     return reconstruct_path(parents, start=start, goal=goal)
 
-def dfs_search(food, mapa, vehicle): 
+def bfs_searchcontext(food, mapa, vehicle, conjunto, contexto, sett, abd): 
     a_food = food.position/mapa.tile_size
     a_vehicle = vehicle.position/mapa.tile_size
 
@@ -348,12 +406,27 @@ def dfs_search(food, mapa, vehicle):
     mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
     mapa_a.walls = mapa.wall_positions
     
-    parents = depth_first_search(mapa_a, start, goal, mapa)
+    context, camefrom, valor = breadth_first_search(mapa_a, start, goal, conjunto, contexto, sett, abd)
+    
     #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
-    draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
-    return reconstruct_path(parents, start=start, goal=goal)
+    #draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
+    return context, camefrom, valor
 
-def dijkstra(food, mapa, vehicle): 
+def dfs_search(food, mapa, vehicle, conjunto, contexto, sett, abd): 
+    a_food = food.position/mapa.tile_size
+    a_vehicle = vehicle.position/mapa.tile_size
+
+    start, goal = (floor(a_vehicle[0]), floor(a_vehicle[1])), (a_food[0], a_food[1])
+    
+    mapa_a = GridWithWeights(len(mapa.grid), len(mapa.grid[0]))
+    mapa_a.walls = mapa.wall_positions
+    
+    context, came_from, valor = dfs(mapa_a, start, goal, conjunto, contexto, sett, abd)
+    #draw_grid(mapa_a, point_to=parents, start=start, goal=goal)
+    #draw_grid(mapa_a, path=reconstruct_path(parents, start=start, goal=goal))
+    return context, came_from, valor
+
+def dijkstra(food, mapa, vehicle, conjunto, contexto, sett, abd): 
     a_food = food.position/mapa.tile_size
     a_vehicle = vehicle.position/mapa.tile_size
 
@@ -364,46 +437,60 @@ def dijkstra(food, mapa, vehicle):
     mapa_a.weights.update({loc: 5 for loc in mapa.atoleiro_positions})
     mapa_a.weights.update({loc: 10 for loc in mapa.water_positions})
 
-    came_from, cost_so_far = dijkstra_search(mapa_a, start, goal, mapa)
+    context, came_from, valor = dijkstra_search(mapa_a, start, goal, conjunto, contexto, sett, abd)
     #draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
     #draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal)
-    return reconstruct_path(came_from, start=start, goal=goal)    
+    return context, came_from, valor 
 
-def search(type, food, mapa, vehicle):
+def search(type, food, mapa, vehicle, conjunto, contexto, sett, abd):
     if type == "1":
-        return bfs_search(food, mapa, vehicle)
+        return bfs_searchcontext(food, mapa, vehicle, conjunto, contexto, sett, abd)
     elif type == "2":
-        return a_search(food, mapa, vehicle)
+        return a_search(food, mapa, vehicle, conjunto, contexto, sett, abd)
     elif type == "3":
-        return dijkstra(food, mapa, vehicle)
+        return dijkstra(food, mapa, vehicle, conjunto, contexto, sett, abd)
     elif type == "4":
-        return heuristc_search(food, mapa, vehicle)
+        return heuristc_search(food, mapa, vehicle, conjunto, contexto, sett, abd)
     elif type == "5":
-        return dfs_search(food, mapa, vehicle)
+        return dfs_search(food, mapa, vehicle, conjunto, contexto, sett, abd)
 
-def heuristc_algorithm(graph, start , goal, mapa):
-    frontier = PriorityQueue()
-    frontier.put(start, 0)
-    came_from = dict()
-    came_from[start] = None
+def heuristc_algorithm(graph, start , goal, conjunto, contexto, sett, abd):
+    if(sett == 1):
+        frontier = contexto[0]
+        came_from = contexto[1]
+    else:
+        frontier = PriorityQueue()
+        frontier.put(start, 0)
+        came_from = dict()
+        came_from[start] = None
     
     while not frontier.empty():
         current = frontier.get()
     
         if current == goal:
-            break
-        
+            return contexto, came_from, 1
         for next in graph.neighbors(current):
             if next not in came_from:
-                mapa.path_grid[next[0]][next[1]] = 1
-                mapa.path_grid[current[0]][current[1]] = 2
                 priority = heuristic(goal, next)
                 frontier.put(next, priority)
                 came_from[next] = current
-    return came_from
+                if(abd == 0):
+                    conjunto.append(next)
+        if(len(contexto) == 0):
+            contexto.append(frontier)
+            contexto.append(came_from)
+            contexto.append(current)
+            #print('aaaa')
+        else:
+            contexto[0] = frontier
+            contexto[1] = came_from
+            contexto[2] = current
+        return contexto, came_from, 0
+        
+    return contexto, came_from, 1
                 
-def heuristc_search(food, mapa, vehicle): 
+def heuristc_search(food, mapa, vehicle, conjunto, contexto, sett, abd): 
     a_food = food.position/mapa.tile_size
     a_vehicle = vehicle.position/mapa.tile_size
 
@@ -414,8 +501,8 @@ def heuristc_search(food, mapa, vehicle):
     mapa_a.weights.update({loc: 5 for loc in mapa.atoleiro_positions})
     mapa_a.weights.update({loc: 10 for loc in mapa.water_positions})
 
-    came_from =  heuristc_algorithm(mapa_a, start, goal, mapa)
-    draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
-    draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
+    context, came_from, valor =  heuristc_algorithm(mapa_a, start, goal, conjunto, contexto, sett, abd)
+    #draw_grid(mapa_a, point_to=came_from, start=start, goal=goal)
+    #draw_grid(mapa_a, path=reconstruct_path(came_from, start=start, goal=goal))
     #draw_grid(mapa_a, number=cost_so_far, start=start, goal=goal)
-    return reconstruct_path(came_from, start=start, goal=goal)    
+    return context, came_from, valor
